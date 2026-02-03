@@ -1,0 +1,654 @@
+# ============================================================================
+#                     NEPHELIA WORLDGUARD - MESSAGES
+# ============================================================================
+#
+# Types disponibles: message, title, popup, tip, toast, bar
+#
+# Placeholders couleurs disponibles:
+#   {RED}, {GREEN}, {YELLOW}, {AQUA}, {WHITE}, {GRAY}, {DARK_RED}, {GOLD}
+#   {DARK_AQUA}, {DARK_GREEN}, {BLUE}, {DARK_BLUE}, {LIGHT_PURPLE}, {DARK_PURPLE}
+#   {BLACK}, {DARK_GRAY}, {BOLD}, {ITALIC}, {UNDERLINE}, {RESET}
+#
+# Placeholders thème:
+#   {PREFIX} - Préfixe global du plugin
+#   {PRIMARY}, {SECONDARY}, {SUCCESS}, {ERROR}, {WARNING}, {INFO}, {MUTED}
+#
+# ============================================================================
+
+# ============================================================================
+# THÈME GLOBAL
+# ============================================================================
+theme:
+  prefixes:
+    global: "§c§lWG §8» §r"
+  colors:
+    PRIMARY: "§c"
+    SECONDARY: "§7"
+    SUCCESS: "§a"
+    ERROR: "§c"
+    WARNING: "§6"
+    INFO: "§b"
+    MUTED: "§8"
+    HIGHLIGHT: "§f"
+    ACCENT: "§4"
+
+# ============================================================================
+# MESSAGES GÉNÉRAUX
+# ============================================================================
+general:
+  player-not-found:
+    message: "{PREFIX}{ERROR}Le joueur {HIGHLIGHT}{PLAYER}{ERROR} est introuvable ou hors ligne."
+    type: message
+
+  invalid-arguments:
+    message: "{PREFIX}{ERROR}Arguments invalides. Utilisez {HIGHLIGHT}{USAGE}"
+    type: message
+
+  reload-success:
+    message: "{PREFIX}{SUCCESS}Configuration rechargée avec succès !"
+    type: message
+
+  reload-failed:
+    message: "{PREFIX}{ERROR}Erreur lors du rechargement de la configuration."
+    type: message
+
+  region-not-found:
+    message: "{PREFIX}{ERROR}La région {HIGHLIGHT}{REGION}{ERROR} n'existe pas."
+    type: message
+
+# ============================================================================
+# RÉGIONS - CRÉATION
+# ============================================================================
+region:
+  create:
+    start:
+      message: "{PREFIX}{SECONDARY}Sneakez sur {HIGHLIGHT}deux positions{SECONDARY} pour définir la région {PRIMARY}{REGION}{SECONDARY}."
+      type: message
+
+    start-extended:
+      message: "{PREFIX}{SECONDARY}Sneakez sur {HIGHLIGHT}deux positions{SECONDARY} pour créer la région étendue {PRIMARY}{REGION}{SECONDARY}."
+      type: message
+
+    pos1-set:
+      message: "{PREFIX}{SUCCESS}Position 1 définie : {HIGHLIGHT}X:{X} Y:{Y} Z:{Z}"
+      type: tip
+
+    pos2-set:
+      message: "{PREFIX}{SUCCESS}Position 2 définie : {HIGHLIGHT}X:{X} Y:{Y} Z:{Z}"
+      type: tip
+
+    success:
+      message: "{PREFIX}{SUCCESS}Région {HIGHLIGHT}{REGION}{SUCCESS} créée avec succès !"
+      type: message
+
+    already-exists:
+      message: "{PREFIX}{ERROR}La région {HIGHLIGHT}{REGION}{ERROR} existe déjà."
+      type: message
+
+    invalid-name:
+      message: "{PREFIX}{ERROR}Le nom de la région doit être alphanumérique."
+      type: message
+
+    global-success:
+      message: "{PREFIX}{SUCCESS}Région globale créée pour le monde {HIGHLIGHT}{WORLD}{SUCCESS}."
+      type: message
+
+    global-exists:
+      message: "{PREFIX}{ERROR}Une région globale existe déjà pour ce monde."
+      type: message
+    
+    already-creating:
+      message: "{PREFIX}{WARNING}Vous êtes déjà en train de créer une région. Terminez-la ou annulez-la avant d'en créer une nouvelle."
+      type: message
+
+  # ---------------------------------------------------------------------------
+  # RÉGIONS - SUPPRESSION
+  # ---------------------------------------------------------------------------
+  delete:
+    success:
+      message: "{PREFIX}{SUCCESS}Région {HIGHLIGHT}{REGION}{SUCCESS} supprimée définitivement."
+      type: message
+
+    not-found:
+      message: "{PREFIX}{ERROR}La région {HIGHLIGHT}{REGION}{ERROR} n'existe pas."
+      type: message
+
+    confirm:
+      message: "{PREFIX}{WARNING}Êtes-vous sûr de vouloir supprimer {HIGHLIGHT}{REGION}{WARNING} ? Tapez la commande à nouveau pour confirmer."
+      type: message
+
+  # ---------------------------------------------------------------------------
+  # RÉGIONS - MODIFICATION
+  # ---------------------------------------------------------------------------
+  redefine:
+    start:
+      message: "{PREFIX}{SECONDARY}Cliquez sur {HIGHLIGHT}deux positions{SECONDARY} pour redéfinir {PRIMARY}{REGION}{SECONDARY}."
+      type: message
+
+    success:
+      message: "{PREFIX}{SUCCESS}Région {HIGHLIGHT}{REGION}{SUCCESS} redéfinie avec succès !"
+      type: message
+
+    already-redefining:
+      message: "{PREFIX}{WARNING}Vous êtes déjà en train de redéfinir une région. Terminez-la ou annulez-la avant d'en redéfinir une nouvelle."
+      type: message
+
+    global-not-allowed:
+      message: "{PREFIX}{ERROR}La redéfinition des régions globales n'est pas autorisée."
+      type: message
+
+    start-extended:
+      message: "{PREFIX}{SECONDARY}Cliquez sur {HIGHLIGHT}deux positions{SECONDARY} pour redéfinir la région étendue {PRIMARY}{REGION}{SECONDARY}."
+      type: message
+
+    failed:
+      message: "{PREFIX}{ERROR}Échec de la redéfinition de la région {HIGHLIGHT}{REGION}{ERROR}."
+      type: message
+
+    pos1-set:
+      message: "{PREFIX}{SUCCESS}Position 1 définie : {HIGHLIGHT}X:{X} Y:{Y} Z:{Z}"
+      type: tip
+
+    pos2-set:
+      message: "{PREFIX}{SUCCESS}Position 2 définie : {HIGHLIGHT}X:{X} Y:{Y} Z:{Z}"
+      type: tip
+
+    cancelled:
+      message: "{PREFIX}{WARNING}Création/redéfinition de région annulée."
+      type: message
+
+  # ---------------------------------------------------------------------------
+  # RÉGIONS - INFORMATION
+  # ---------------------------------------------------------------------------
+  info:
+    not-in-region:
+      message: "{PREFIX}{ERROR}Vous n'êtes actuellement dans aucune région."
+      type: message
+
+    header:
+      message: "{MUTED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n{PRIMARY}§l⚑ {HIGHLIGHT}Région : {PRIMARY}{REGION}\n{MUTED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+      type: message
+
+    world:
+      message: "{SECONDARY}  ▸ Monde : {HIGHLIGHT}{WORLD}"
+      type: message
+
+    priority:
+      message: "{SECONDARY}  ▸ Priorité : {HIGHLIGHT}{PRIORITY}"
+      type: message
+
+    positions:
+      message: "{SECONDARY}  ▸ Position 1 : {HIGHLIGHT}{X1}, {Y1}, {Z1}\n{SECONDARY}  ▸ Position 2 : {HIGHLIGHT}{X2}, {Y2}, {Z2}"
+      type: message
+
+  # ---------------------------------------------------------------------------
+  # RÉGIONS - LISTE
+  # ---------------------------------------------------------------------------
+  list:
+    header:
+      message: "{MUTED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n{PRIMARY}§l⚑ {HIGHLIGHT}Liste des régions ({COUNT})\n{MUTED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+      type: message
+
+    entry:
+      message: "{SECONDARY}  ▸ {PRIMARY}{REGION} {MUTED}({WORLD})"
+      type: message
+
+    empty:
+      message: "{PREFIX}{SECONDARY}Aucune région n'a été créée. Utilisez {HIGHLIGHT}/rg create <nom>{SECONDARY}."
+      type: message
+
+    footer:
+      message: "{MUTED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+      type: message
+
+  # ---------------------------------------------------------------------------
+  # RÉGIONS - JOUEUR
+  # ---------------------------------------------------------------------------
+  player:
+    in-region:
+      message: "{PREFIX}{SECONDARY}Le joueur {HIGHLIGHT}{PLAYER}{SECONDARY} est dans la région {PRIMARY}{REGION}{SECONDARY}."
+      type: message
+
+    not-in-region:
+      message: "{PREFIX}{SECONDARY}Le joueur {HIGHLIGHT}{PLAYER}{SECONDARY} n'est dans aucune région."
+      type: message
+
+# ============================================================================
+# FLAGS
+# ============================================================================
+flags:
+  # ---------------------------------------------------------------------------
+  # FLAGS - GESTION
+  # ---------------------------------------------------------------------------
+  set:
+    success:
+      message: "{PREFIX}{SUCCESS}Flag {HIGHLIGHT}{FLAG}{SUCCESS} défini sur {HIGHLIGHT}{VALUE}{SUCCESS} pour {PRIMARY}{REGION}{SUCCESS}."
+      type: message
+
+    invalid-flag:
+      message: "{PREFIX}{ERROR}Le flag {HIGHLIGHT}{FLAG}{ERROR} n'existe pas."
+      type: message
+
+    invalid-value:
+      message: "{PREFIX}{ERROR}Valeur invalide pour le flag {HIGHLIGHT}{FLAG}{ERROR}. Attendu : {HIGHLIGHT}{EXPECTED}{ERROR}."
+      type: message
+
+    usage:
+      message: "{PREFIX}{ERROR}Utilisation correcte : {HIGHLIGHT}/nwg flags set <region> <flag> <value>{ERROR}."
+      type: message
+
+    failure:
+      message: "{PREFIX}{ERROR}Échec de la définition du flag {HIGHLIGHT}{FLAG}{ERROR} pour {PRIMARY}{REGION}{ERROR}."
+      type: message
+
+  reset:
+    success:
+      message: "{PREFIX}{SUCCESS}Flag {HIGHLIGHT}{FLAG}{SUCCESS} réinitialisé à sa valeur par défaut pour {PRIMARY}{REGION}{SUCCESS}."
+      type: message
+
+    confirm:
+      message: "{PREFIX}{WARNING}Êtes-vous sûr de vouloir réinitialiser tous les flags de {HIGHLIGHT}{REGION}{WARNING} ? Tapez la commande à nouveau pour confirmer."
+      type: message
+
+    success-all:
+      message: "{PREFIX}{SUCCESS}Tous les flags de {HIGHLIGHT}{REGION}{SUCCESS} ont été réinitialisés à leurs valeurs par défaut."
+      type: message
+
+    expired:
+      message: "{PREFIX}{ERROR}La confirmation pour la réinitialisation des flags a expiré. Veuillez réessayer."
+      type: message
+
+  get:
+    header:
+      message: "{MUTED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n{PRIMARY}§l⚐ {HIGHLIGHT}Flags de : {PRIMARY}{REGION}\n{MUTED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+      type: message
+
+    entry:
+      message: "{SECONDARY}  ▸ {MUTED}{FLAG} : {VALUE}"
+      type: message
+
+    footer:
+      message: "{MUTED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+      type: message
+
+    specific:
+      message: "{PREFIX}{SECONDARY}Le flag {HIGHLIGHT}{FLAG}{SECONDARY} de la région {PRIMARY}{REGION}{SECONDARY} est : {HIGHLIGHT}{VALUE}"
+      type: message
+
+  list:
+    header:
+      message: "{MUTED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n{PRIMARY}§l⚐ {HIGHLIGHT}Flags disponibles ({COUNT})\n{MUTED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+      type: message
+
+    entry:
+      message: "{MUTED}  ▸ {PRIMARY}{FLAG} {MUTED}[{TYPE}]{SECONDARY} - {DESCRIPTION} {MUTED}(défaut: {VALUE})"
+      type: message
+
+# ============================================================================
+# PROTECTIONS - MESSAGES DE REFUS
+# ============================================================================
+denied:
+  # ---------------------------------------------------------------------------
+  # BLOCS
+  # ---------------------------------------------------------------------------
+  block-place:
+    message: "{PREFIX}{ERROR}Vous ne pouvez pas placer de blocs ici."
+    type: bar
+
+  block-break:
+    message: "{PREFIX}{ERROR}Vous ne pouvez pas casser de blocs ici."
+    type: bar
+
+  # ---------------------------------------------------------------------------
+  # COMBAT
+  # ---------------------------------------------------------------------------
+  pvp:
+    message: "{PREFIX}{ERROR}Le PvP est désactivé dans cette zone."
+    type: bar
+
+  allow-damage-animals:
+    message: "{PREFIX}{ERROR}Vous ne pouvez pas blesser les animaux ici."
+    type: bar
+
+  allow-damage-monsters:
+    message: "{PREFIX}{ERROR}Vous ne pouvez pas blesser les monstres ici."
+    type: bar
+
+  # ---------------------------------------------------------------------------
+  # INTERACTIONS
+  # ---------------------------------------------------------------------------
+  use:
+    message: "{PREFIX}{ERROR}Vous ne pouvez pas interagir avec ce bloc."
+    type: bar
+
+  interactframe:
+    message: "{PREFIX}{ERROR}Vous ne pouvez pas interagir avec les cadres."
+    type: bar
+
+  sleep:
+    message: "{PREFIX}{ERROR}Vous ne pouvez pas dormir ici."
+    type: bar
+
+  # ---------------------------------------------------------------------------
+  # ITEMS
+  # ---------------------------------------------------------------------------
+  item-drop:
+    message: "{PREFIX}{ERROR}Vous ne pouvez pas jeter d'objets ici."
+    type: bar
+
+  eat:
+    message: "{PREFIX}{ERROR}Vous ne pouvez pas manger ici."
+    type: bar
+
+  enderpearl:
+    message: "{PREFIX}{ERROR}Vous ne pouvez pas utiliser de perles de l'Ender ici."
+    type: bar
+
+  bow:
+    message: "{PREFIX}{ERROR}Vous ne pouvez pas utiliser d'arc ici."
+    type: bar
+
+  potions:
+    message: "{PREFIX}{ERROR}Vous ne pouvez pas utiliser de potions ici."
+    type: bar
+
+  # ---------------------------------------------------------------------------
+  # CHAT & COMMANDES
+  # ---------------------------------------------------------------------------
+  send-chat:
+    message: "{PREFIX}{ERROR}Vous ne pouvez pas parler dans cette zone."
+    type: bar
+
+  blocked-cmds:
+    message: "{PREFIX}{ERROR}Cette commande est interdite dans cette zone."
+    type: message
+
+  allowed-cmds:
+    message: "{PREFIX}{ERROR}Cette commande n'est pas autorisée ici."
+    type: message
+
+  # ---------------------------------------------------------------------------
+  # DÉPLACEMENTS
+  # ---------------------------------------------------------------------------
+  allowed-enter:
+    message: "{PREFIX}{ERROR}Vous n'êtes pas autorisé à entrer dans cette zone."
+    type: message
+
+  allowed-leave:
+    message: "{PREFIX}{ERROR}Vous ne pouvez pas quitter cette zone."
+    type: message
+
+# ============================================================================
+# NOTIFICATIONS DE RÉGION
+# ============================================================================
+notify:
+  enter:
+    default:
+      message: "{PRIMARY}⚑ {SECONDARY}Vous entrez dans {HIGHLIGHT}{REGION}"
+      type: tip
+
+  leave:
+    default:
+      message: "{MUTED}⚑ {SECONDARY}Vous quittez {HIGHLIGHT}{REGION}"
+      type: tip
+
+# ============================================================================
+# INTERFACE GRAPHIQUE (GUI)
+# ============================================================================
+gui:
+  main:
+    title: "§c§lWorldGuard §8- Menu"
+
+    buttons:
+      region-management: "§c§lGestion des Régions"
+      help: "§7§lAide"
+
+  region-management:
+    title: "§c§lGestion des Régions"
+
+    buttons:
+      manage-existing: "§f§lGérer une région"
+      create-region: "§a§lCréer une région"
+      redefine-region: "§6§lRedéfinir une région"
+      delete-region: "§c§lSupprimer une région"
+
+  create-region:
+    title: "§a§lCréer une Région"
+
+    labels:
+      instructions: "§7Entrez le nom de la nouvelle région.\n§7Le nom doit être alphanumérique."
+      name-input: "§fNom de la région"
+      name-placeholder: "MaRegion"
+      extended-toggle: "§7Région étendue (Y: 0 → 256)"
+      extended-info: "§8Une région étendue s'étend\n§8du bedrock jusqu'au ciel."
+
+  select-region:
+    title: "§c§lSélectionner une Région"
+
+    labels:
+      dropdown: "§fChoisir une région"
+
+  region-flags:
+    title: "§c§lFlags - {REGION}"
+
+    labels:
+      flag-toggle: "§f{FLAG}"
+      flag-input: "§f{FLAG}"
+      current-value: "§7Valeur actuelle : §f{VALUE}"
+
+  delete-confirm:
+    title: "§c§l⚠ Confirmation"
+
+    labels:
+      warning: "§c§lATTENTION !\n§7Cette action est irréversible.\n§7La région §f{REGION} §7sera supprimée définitivement."
+      confirm-button: "§c§lSupprimer"
+      cancel-button: "§a§lAnnuler"
+
+# ============================================================================
+# AIDE
+# ============================================================================
+help:
+  header:
+    message: "{MUTED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n{PRIMARY}§l⚑ {HIGHLIGHT}NepheliaWorldGuard - Aide\n{MUTED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    type: message
+
+  commands:
+    message: |
+      {SECONDARY}  {PRIMARY}/nwg {MUTED}- {SECONDARY}Ouvre le menu principal
+      {SECONDARY}  {PRIMARY}/nwg create <nom> <extended> <global:tout les mondes> {MUTED}- {SECONDARY}Région étendue (Y: -Y_MIN:+Y_MAX)
+      {SECONDARY}  {PRIMARY}/nwg delete <nom> {MUTED}- {SECONDARY}Supprimer une région
+      {SECONDARY}  {PRIMARY}/nwg list {MUTED}- {SECONDARY}Lister les régions
+      {SECONDARY}  {PRIMARY}/nwg info {MUTED}- {SECONDARY}Info de la région actuelle
+      {SECONDARY}  {PRIMARY}/nwg redefine <nom> {MUTED}- {SECONDARY}Redéfinir une région
+      {SECONDARY}  {PRIMARY}/nwg flags <region> get {MUTED}- {SECONDARY}Voir les flags
+      {SECONDARY}  {PRIMARY}/nwg flags <region> set <flag> <valeur> {MUTED}- {SECONDARY}Modifier un flag
+      {SECONDARY}  {PRIMARY}/nwg flags <region> reset <flag> {MUTED}- {SECONDARY}Réinitialiser un flag
+      {SECONDARY}  {PRIMARY}/nwg flags <region> list {MUTED}- {SECONDARY}Lister les flags disponibles
+      {SECONDARY}  {PRIMARY}/nwg cancel {MUTED}- {SECONDARY}Annuler la création/redéfinition en cours
+      {SECONDARY}  {PRIMARY}/nwg bypass {MUTED}- {SECONDARY}Activer/désactiver le mode bypass
+      {SECONDARY}  {PRIMARY}/nwg reload {MUTED}- {SECONDARY}Recharger la configuration
+      {SECONDARY}  {PRIMARY}/nwg parent <region> set <parent> {MUTED}- {SECONDARY}Définir le parent d'une région
+      {SECONDARY}  {PRIMARY}/nwg parent <region> remove {MUTED}- {SECONDARY}Retirer le parent d'une région
+      {SECONDARY}  {PRIMARY}/nwg parent <region> info {MUTED}- {SECONDARY}Voir les informations de parenté d'une région
+      {SECONDARY}  {MUTED}Utilisez {PRIMARY}/nwg help {MUTED}pour afficher cette aide.
+      {SECONDARY}
+    type: message
+
+  footer:
+    message: "{MUTED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n{SECONDARY}  Documentation : {PRIMARY}github.com/fenomeno/NepheliaWorldGuard\n{MUTED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    type: message
+
+  flags:
+    header:
+      message: "{MUTED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n{PRIMARY}§l⚐ {HIGHLIGHT}Flags disponibles\n{MUTED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+      type: message
+
+    list:
+      message: |
+        {SECONDARY}  {MUTED}[bool] {PRIMARY}block-place {MUTED}- {SECONDARY}Interdire le placement
+        {SECONDARY}  {MUTED}[bool] {PRIMARY}block-break {MUTED}- {SECONDARY}Interdire la destruction
+        {SECONDARY}  {MUTED}[bool] {PRIMARY}pvp {MUTED}- {SECONDARY}Autoriser le PvP
+        {SECONDARY}  {MUTED}[bool] {PRIMARY}invincible {MUTED}- {SECONDARY}Joueurs invincibles
+        {SECONDARY}  {MUTED}[bool] {PRIMARY}use {MUTED}- {SECONDARY}Interaction avec blocs
+        {SECONDARY}  {MUTED}[bool] {PRIMARY}item-drop {MUTED}- {SECONDARY}Jeter des items
+        {SECONDARY}  {MUTED}[bool] {PRIMARY}explosion {MUTED}- {SECONDARY}Autoriser explosions
+        {SECONDARY}  {MUTED}[str]  {PRIMARY}notify-enter {MUTED}- {SECONDARY}Message d'entrée
+        {SECONDARY}  {MUTED}[str]  {PRIMARY}notify-leave {MUTED}- {SECONDARY}Message de sortie
+        {SECONDARY}  {MUTED}[str]  {PRIMARY}game-mode {MUTED}- {SECONDARY}Forcer un gamemode
+        {SECONDARY}  {MUTED}[int]  {PRIMARY}fly-mode {MUTED}- {SECONDARY}Mode vol (0-3)
+        {SECONDARY}  {MUTED}[int]  {PRIMARY}priority {MUTED}- {SECONDARY}Priorité de la région
+        {SECONDARY}  {MUTED}[arr]  {PRIMARY}effects {MUTED}- {SECONDARY}Effets de potion
+        {SECONDARY}  {MUTED}[arr]  {PRIMARY}blocked-cmds {MUTED}- {SECONDARY}Commandes bloquées
+        {SECONDARY}
+        {SECONDARY}  {MUTED}Utilisez {PRIMARY}/rg flags get <region> {MUTED}pour la liste complète.
+      type: message
+
+
+
+# ============================================================================
+# BYPASS
+# ============================================================================
+bypass:
+  enabled:
+    message: "{PREFIX}{SUCCESS}Mode bypass {HIGHLIGHT}activé{SUCCESS}. Vous ignorez les protections."
+    type: message
+
+  disabled:
+    message: "{PREFIX}{WARNING}Mode bypass {HIGHLIGHT}désactivé{WARNING}."
+    type: message
+
+  active-warning:
+    message: "{PREFIX}{WARNING}⚠ Bypass actif - Les protections sont ignorées."
+    type: bar
+
+# ============================================================================
+# ÉVÉNEMENTS DE RÉGION
+# ============================================================================
+events:
+  gamemode-changed:
+    message: "{PREFIX}{SECONDARY}Votre mode de jeu a été changé en {HIGHLIGHT}{GAMEMODE}{SECONDARY}."
+    type: message
+
+  fly-enabled:
+    message: "{PREFIX}{SUCCESS}✦ Vol activé dans cette zone."
+    type: tip
+
+  fly-disabled:
+    message: "{PREFIX}{WARNING}✦ Vol désactivé dans cette zone."
+    type: tip
+
+  effects-applied:
+    message: "{PREFIX}{INFO}✦ Effets de région appliqués."
+    type: tip
+
+  effects-removed:
+    message: "{PREFIX}{MUTED}✦ Effets de région retirés."
+    type: tip
+
+# ============================================================================
+# ERREURS SYSTÈME
+# ============================================================================
+errors:
+  world-not-found:
+    message: "{PREFIX}{ERROR}Le monde {HIGHLIGHT}{WORLD}{ERROR} n'existe pas ou n'est pas chargé."
+    type: message
+
+  region-not-found:
+    message: "{PREFIX}{ERROR}La région {HIGHLIGHT}{REGION}{ERROR} n'existe pas."
+    type: message
+
+  save-failed:
+    message: "{PREFIX}{ERROR}Erreur lors de la sauvegarde des régions."
+    type: message
+
+  load-failed:
+    message: "{PREFIX}{ERROR}Erreur lors du chargement des régions."
+    type: message
+
+  invalid-position:
+    message: "{PREFIX}{ERROR}Position invalide. Les deux positions doivent être dans le même monde."
+    type: message
+
+  selection-incomplete:
+    message: "{PREFIX}{ERROR}Sélection incomplète. Définissez les deux positions."
+    type: message
+
+  internal-error:
+    message: "{PREFIX}{ERROR}Une erreur interne s'est produite. Consultez la console."
+    type: message
+
+# ============================================================================
+# DEBUG (optionnel, si debugging activé)
+# ============================================================================
+debug:
+  region-enter:
+    message: "{MUTED}[DEBUG] {SECONDARY}Entrée dans la région : {REGION}"
+    type: message
+
+  region-leave:
+    message: "{MUTED}[DEBUG] {SECONDARY}Sortie de la région : {REGION}"
+    type: message
+
+  flag-check:
+    message: "{MUTED}[DEBUG] {SECONDARY}Vérification flag {FLAG} = {VALUE} pour {PLAYER}"
+    type: message
+
+  event-cancelled:
+    message: "{MUTED}[DEBUG] {SECONDARY}Événement annulé par flag {FLAG} dans {REGION}"
+    type: message
+
+parent:
+  set:
+    success:
+      message: "{PREFIX}{SUCCESS}La région {HIGHLIGHT}{REGION}{SUCCESS} hérite maintenant de {PRIMARY}{PARENT}{SUCCESS}."
+      type: message
+
+    failed:
+      message: "{PREFIX}{ERROR}Impossible de définir le parent. Vérifiez qu'il n'y a pas de référence circulaire."
+      type: message
+
+    usage:
+      message: "{PREFIX}{SECONDARY}Usage : {HIGHLIGHT}/nwg parent <region> set <parent>"
+      type: message
+
+  self-reference:
+    message: "{PREFIX}{ERROR}Une région ne peut pas être son propre parent."
+    type: message
+
+  circular-reference:
+    message: "{PREFIX}{ERROR}Cette configuration créerait une référence circulaire."
+    type: message
+
+  remove:
+    success:
+      message: "{PREFIX}{SUCCESS}Le parent {HIGHLIGHT}{PARENT}{SUCCESS} a été retiré de {PRIMARY}{REGION}{SUCCESS}."
+      type: message
+
+  no-parent:
+    message: "{PREFIX}{WARNING}La région {HIGHLIGHT}{REGION}{WARNING} n'a pas de parent."
+    type: message
+
+  info:
+    header:
+      message: "{MUTED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n{PRIMARY}§l⚐ {HIGHLIGHT}Hiérarchie de : {PRIMARY}{REGION}\n{MUTED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+      type: message
+
+    parent:
+      message: "{MUTED}  ▸ Parent direct : {PRIMARY}{PARENT}"
+      type: message
+
+    chain:
+      message: "{MUTED}  ▸ Chaîne d'héritage : {SECONDARY}{VALUE}"
+      type: message
+
+    children:
+      message: "{MUTED}  ▸ Enfants directs : {SECONDARY}{VALUE}"
+      type: message
+
+    descendants:
+      message: "{MUTED}  ▸ Total descendants : {HIGHLIGHT}{COUNT}"
+      type: message
+
+    inherited-flags:
+      message: "{MUTED}  ▸ Flags hérités : {HIGHLIGHT}{COUNT}"
+      type: message

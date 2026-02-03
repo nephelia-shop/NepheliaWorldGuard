@@ -1,0 +1,29 @@
+name: NepheliaWorldGuard
+main: fenomeno\NepheliaWorldGuard\Main
+api: 5.0.0
+version: 0.0.1
+author: fenomeno
+
+permissions:
+  nepheliaworldguard.use:
+    default: op
+  nepheliaworldguard.use.create:
+    default: op
+  nepheliaworldguard.use.delete:
+    default: op
+  nepheliaworldguard.use.list:
+    default: op
+  nepheliaworldguard.use.info:
+    default: op
+  nepheliaworldguard.use.redefine:
+    default: op
+  nepheliaworldguard.use.getplayer:
+    default: op
+  nepheliaworldguard.use.flags:
+    default: op
+  nepheliaworldguard.bypass:
+    default: op
+  nepheliaworldguard.use.cancel:
+    default: op
+  nepheliaworldguard.use.parent:
+    default: op

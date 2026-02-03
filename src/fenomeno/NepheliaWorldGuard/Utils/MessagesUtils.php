@@ -1,0 +1,179 @@
+<?php
+
+namespace fenomeno\NepheliaWorldGuard\Utils;
+
+use pocketmine\command\CommandSender;
+use pocketmine\console\ConsoleCommandSender;
+use pocketmine\player\Player;
+use pocketmine\plugin\PluginBase;
+use pocketmine\Server;
+use pocketmine\utils\Config;
+use pocketmine\utils\TextFormat;
+use ReflectionClass;
+use Throwable;
+
+final class MessagesUtils {
+
+    private static Config $config;
+
+    private static array $colorTags = [];
+
+    private static array $themeTags = [];
+
+    private static array $templateCache = [];
+
+    private static string $configName = 'messages.yml';
+
+    private static ?PluginBase $plugin = null;
+
+    public static function init(PluginBase $plugin, string $config = 'messages.yml') : void {
+        self::$plugin = $plugin;
+        self::$configName = $config;
+
+        $plugin->saveResource($config, true);
+        self::$config = new Config($plugin->getDataFolder() . $config, Config::YAML);
+
+        self::$colorTags = [];
+        foreach ((new ReflectionClass(TextFormat::class))->getConstants() as $color => $code) {
+            if (is_string($code)) {
+                self::$colorTags["{" . $color . "}"] = $code;
+            }
+        }
+
+        self::loadThemeTags();
+
+        self::$templateCache = [];
+    }
+
+    public static function reload(): void {
+        if (self::$plugin === null) return;
+        self::init(self::$plugin, self::$configName);
+    }
+
+    public static function sendTo(CommandSender|Player|Server|array $target, string $id, array $extraTags = [], ?string $default = null) : void {
+        $message = self::getMessage($id, $extraTags, $default ?? $id);
+        if ($message === "") return;
+
+        $type = (string) self::$config->getNested($id . '.type', 'message');
+
+        if (is_array($target)) {
+            foreach ($target as $p) {
+                if ($p instanceof Player) {
+                    self::sendTo($p, $id, $extraTags, $default);
+                }
+            }
+            return;
+        }
+
+        if ($target instanceof Player) {
+            match ($type) {
+                'title' => $target->sendTitle($message),
+                'popup' => $target->sendPopup($message),
+                'tip'   => $target->sendTip($message),
+                'toast' => $target->sendToastNotification(
+                    explode("\n", $message)[0] ?? "",
+                    explode("\n", $message)[1] ?? ""
+                ),
+                'bar' => $target->sendActionBarMessage($message),
+                default => $target->sendMessage($message),
+            };
+            return;
+        }
+
+        if ($target instanceof ConsoleCommandSender){
+            $target->sendMessage($message);
+            return;
+        }
+
+        if ($target instanceof Server) {
+            match ($type) {
+                'title' => $target->broadcastTitle($message),
+                'popup' => $target->broadcastPopup($message),
+                'tip' => $target->broadcastTip($message),
+                default => $target->broadcastMessage($message),
+            };
+        }
+    }
+
+    public static function broadcastMessage(string $message, array $extraTags = [], ?string $default = null) : void
+    {
+        self::sendTo(Server::getInstance(), $message, $extraTags, $default);
+    }
+
+    public static function getMessage(string $id, array $extraTags = [], ?string $default = null) : string {
+        $default ??= $id;
+
+        if (isset(self::$templateCache[$id])) {
+            $template = self::$templateCache[$id];
+            return !empty($extraTags) ? str_replace(array_keys($extraTags), array_values($extraTags), $template) : $template;
+        }
+
+        $raw = self::lookupRawMessage($id, $default);
+        $t = self::applyThemeTags($raw);
+        $t = self::translateColorTags($t);
+
+        self::$templateCache[$id] = $t;
+
+        return !empty($extraTags) ? str_replace(array_keys($extraTags), array_values($extraTags), $t) : $t;
+    }
+
+    public static function translateColorTags(string $message): string {
+        if (!empty(self::$colorTags)) {
+            $message = str_replace(array_keys(self::$colorTags), self::$colorTags, $message);
+        }
+        return TextFormat::colorize($message);
+    }
+
+    private static function applyThemeTags(string $message): string {
+        if (!empty(self::$themeTags)) {
+            $message = str_replace(array_keys(self::$themeTags), self::$themeTags, $message);
+        }
+        return $message;
+    }
+
+    private static function lookupRawMessage(string $id, string $default): string {
+        $nodeMsg = self::$config->getNested($id . '.message');
+        if ($nodeMsg !== null) {
+            return (string)$nodeMsg;
+        }
+        $node = self::$config->getNested($id);
+        if (is_string($node)) {
+            return $node;
+        }
+        $root = self::$config->get($id);
+        if (is_string($root)) {
+            return $root;
+        }
+        return $default;
+    }
+
+    public static function getMessageWithMeta(string $id, array $extraTags = [], ?string $default = null): array
+    {
+        $message = self::getMessage($id, $extraTags, $default ?? $id);
+        $type    = (string) self::$config->getNested($id . '.type', 'message');
+        return ['message' => $message, 'type' => $type, 'meta' => self::$config->getNested($id . '.meta', [])];
+    }
+
+    private static function loadThemeTags(): void {
+        self::$themeTags = [];
+
+        try {
+            $theme    = (array) self::$config->get('theme', []);
+            $prefixes = (array) ($theme['prefixes'] ?? []);
+            $colors   = (array) ($theme['colors'] ?? []);
+
+            $map = [
+                '{PREFIX}' => (string) ($prefixes['global']    ?? ''),
+            ];
+            foreach ($map as $k => $v) {
+                if ($v !== '') self::$themeTags[$k] = $v;
+            }
+
+            foreach ($colors as $name => $code) {
+                $placeholder = '{' . strtoupper((string)$name) . '}';
+                self::$colorTags[$placeholder] = (string)$code;
+            }
+        } catch (Throwable) {}
+    }
+
+}

@@ -9,11 +9,13 @@ use fenomeno\NepheliaWorldGuard\Regions\Region;
 use pocketmine\entity\projectile\Arrow;
 use pocketmine\entity\projectile\EnderPearl;
 use pocketmine\entity\projectile\SplashPotion;
+use pocketmine\event\entity\EntityItemPickupEvent;
 use pocketmine\event\entity\ProjectileLaunchEvent;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerDropItemEvent;
 use pocketmine\event\player\PlayerItemConsumeEvent;
+use pocketmine\event\player\PlayerItemUseEvent;
 use pocketmine\player\Player;
 
 class ItemHandler extends AbstractFlagHandler
@@ -27,7 +29,8 @@ class ItemHandler extends AbstractFlagHandler
             Flags::Eat,
             Flags::Enderpearl,
             Flags::Bow,
-            Flags::Potions
+            Flags::Potions,
+            Flags::ItemUse
         ];
     }
 
@@ -38,6 +41,8 @@ class ItemHandler extends AbstractFlagHandler
             $event instanceof PlayerDeathEvent       => $this->handlePlayerDeath($event, $region),
             $event instanceof PlayerItemConsumeEvent => $this->handlePlayerItemConsume($event, $region),
             $event instanceof ProjectileLaunchEvent  => $this->handleProjectileLaunch($event, $region),
+            $event instanceof PlayerItemUseEvent     => $this->handlePlayerItemUse($event, $region),
+            $event instanceof EntityItemPickupEvent  => $this->handlePlayerItemPickup($event, $region),
             default                                  => FlagResult::allow(),
         };
     }
@@ -112,6 +117,36 @@ class ItemHandler extends AbstractFlagHandler
                 if(! $this->canBypass($owner, Flags::Potions, $region)){
                     return FlagResult::deny(Flags::Potions);
                 }
+            }
+        }
+
+        return FlagResult::allow();
+    }
+
+    private function handlePlayerItemUse(PlayerItemUseEvent $event, Region $region): FlagResult
+    {
+        $player = $event->getPlayer();
+
+        if($this->isFlagDenied($region, Flags::ItemUse)){
+            if(! $this->canBypass($player, Flags::ItemUse, $region)){
+                return FlagResult::deny(Flags::ItemUse);
+            }
+        }
+
+        return FlagResult::allow();
+    }
+
+    private function handlePlayerItemPickup(EntityItemPickupEvent $event, Region $region): FlagResult
+    {
+        $player = $event->getEntity();
+
+        if(! $player instanceof Player){
+            return FlagResult::allow();
+        }
+
+        if($this->isFlagDenied($region, Flags::ItemPickup)){
+            if(! $this->canBypass($player, Flags::ItemPickup, $region)){
+                return FlagResult::deny(Flags::ItemPickup);
             }
         }
 

@@ -5,6 +5,7 @@ namespace fenomeno\NepheliaWorldGuard;
 use fenomeno\NepheliaWorldGuard\Enums\Flags;
 use fenomeno\NepheliaWorldGuard\Flags\FlagRegistry;
 use fenomeno\NepheliaWorldGuard\Flags\FlagResult;
+use fenomeno\NepheliaWorldGuard\Flags\Types\DamageHandler;
 use fenomeno\NepheliaWorldGuard\Flags\Types\MovementHandler;
 use fenomeno\NepheliaWorldGuard\Flags\Types\PlayerStateHandler;
 use fenomeno\NepheliaWorldGuard\Regions\Region;
@@ -20,6 +21,7 @@ use pocketmine\event\Cancellable;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityExplodeEvent;
+use pocketmine\event\entity\EntityItemPickupEvent;
 use pocketmine\event\entity\ProjectileLaunchEvent;
 use pocketmine\event\Event;
 use pocketmine\event\inventory\InventoryOpenEvent;
@@ -31,7 +33,9 @@ use pocketmine\event\player\PlayerExhaustEvent;
 use pocketmine\event\player\PlayerExperienceChangeEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerItemConsumeEvent;
+use pocketmine\event\player\PlayerItemUseEvent;
 use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\server\CommandEvent;
 use pocketmine\player\Player;
@@ -92,6 +96,16 @@ final class EventDispatcher implements Listener
         unset($this->mutedPlayers[$uuid]);
     }
 
+    /**
+     * @priority NORMAL
+     * @noinspection PhpUnused
+     */
+    public function onMove(PlayerMoveEvent $event): void
+    {
+        $player = $event->getPlayer();
+        $this->updatePlayerRegion($player);
+    }
+
     private function updatePlayerRegion(Player $player): void
     {
         $uuid              = $player->getUniqueId()->getBytes();
@@ -115,6 +129,9 @@ final class EventDispatcher implements Listener
         $uuid      = $player->getUniqueId()->getBytes();
         $oldRegion = $oldRegionName !== "" ? $this->main->getRegionsManager()->getRegion($oldRegionName) : null;
         $newRegion = $newRegionName !== "" ? $this->main->getRegionsManager()->getRegion($newRegionName) : null;
+
+        $player->sendMessage("leave " . $oldRegionName);
+        $player->sendMessage("enter " . $newRegionName);
 
         /** @var MovementHandler $movementHandler */
         $movementHandler = $this->registry->getHandler(MovementHandler::class);
@@ -346,6 +363,42 @@ final class EventDispatcher implements Listener
      * @priority HIGH
      * @noinspection PhpUnused
      */
+    public function onPickup(EntityItemPickupEvent $event): void
+    {
+        $entity = $event->getEntity();
+        if (! $entity instanceof Player) {
+            return;
+        }
+
+        $region = $this->main->getRegionsManager()->getRegionAt($entity->getPosition());
+
+        if ($region === null) {
+            return;
+        }
+
+        $this->dispatchToHandlers($event, $region, $entity);
+    }
+
+    /**
+     * @priority HIGH
+     * @noinspection PhpUnused
+     */
+    public function onUse(PlayerItemUseEvent $event): void
+    {
+        $player = $event->getPlayer();
+        $region = $this->main->getRegionsManager()->getRegionAt($player->getPosition());
+
+        if ($region === null) {
+            return;
+        }
+
+        $this->dispatchToHandlers($event, $region, $player);
+    }
+
+    /**
+     * @priority HIGH
+     * @noinspection PhpUnused
+     */
     public function onPlayerDeath(PlayerDeathEvent $event): void
     {
         $player = $event->getPlayer();
@@ -499,7 +552,7 @@ final class EventDispatcher implements Listener
 
     private function dispatchToHandlers(Event $event, Region $region, ?Player $player = null): FlagResult
     {
-        if ($region->getFlag(Flags::PluginBypass)) {
+        if ($region->hasPluginBypass()) {
             return FlagResult::allow();
         }
 

@@ -56,12 +56,10 @@ class Region
 
     public function setFlag(Flags $flag, mixed $value): void
     {
-        $castedValue = $this->castValue($value);
-
-        if ($castedValue === $flag->getDefault()) {
+        if ($value === $flag->getDefault()) {
             unset($this->flags[$flag->value]);
         } else {
-            $this->flags[$flag->value] = $castedValue;
+            $this->flags[$flag->value] = $value;
         }
     }
 
@@ -215,6 +213,13 @@ class Region
         }
 
         return 'default';
+    }
+
+    public function hasPluginBypass(): bool
+    {
+        $bypassPlugins = $this->getFlag(Flags::PluginBypass);
+
+        return $bypassPlugins === true || $bypassPlugins === "true" || (is_array($bypassPlugins) && count($bypassPlugins) > 0);
     }
 
 }

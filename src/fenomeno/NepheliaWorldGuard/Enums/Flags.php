@@ -26,6 +26,8 @@ enum Flags: string
     case InteractFrame        = "interactframe";
     case ItemDrop             = "item-drop";
     case ItemByDeath          = "item-by-death";
+    case ItemUse              = "item-use";
+    case ItemPickup           = "item-pickup";
     case Explosion            = "explosion";
     case NotifyEnter          = "notify-enter";
     case NotifyLeave          = "notify-leave";
@@ -70,8 +72,8 @@ enum Flags: string
             self::AllowedLeave, self::Sleep, self::SendChat, self::ReceiveChat,
             self::Enderpearl, self::Bow, self::Eat, self::Hunger,
             self::AllowDamageAnimals, self::AllowDamageMonsters,
-            self::AllowLeavesDecay, self::AllowPlantGrowth,
-            self::AllowSpreading, self::AllowBlockBurn => true,
+            self::AllowLeavesDecay, self::AllowPlantGrowth, self::ItemPickup,
+            self::AllowSpreading, self::AllowBlockBurn, self::ItemUse => true,
 
             self::ConsoleCmdOnEnter, self::ConsoleCmdOnLeave => "none",
             self::NotifyEnter, self::NotifyLeave => "",
@@ -126,6 +128,8 @@ enum Flags: string
             self::AllowSpreading       => "Propagation des blocs",
             self::AllowBlockBurn       => "Combustion des blocs",
             self::Priority             => "Priorité",
+            self::ItemUse              => "Utilisation d'objets",
+            self::ItemPickup           => "Récupération d'objets",
         };
     }
 
@@ -172,28 +176,8 @@ enum Flags: string
             self::AllowSpreading       => "Autorise la propagation des blocs",
             self::AllowBlockBurn       => "Autorise la combustion des blocs",
             self::Priority             => "Priorité de la région",
-        };
-    }
-
-    public function getHandlerClass(): ?string
-    {
-        return match($this) {
-            self::BlockPlace, self::BlockBreak => Handlers\BlockHandler::class,
-            self::PVP, self::Invincible, self::FallDmg,
-            self::AllowDamageAnimals, self::AllowDamageMonsters => Handlers\DamageHandler::class,
-            self::AllowedEnter, self::AllowedLeave,
-            self::NotifyEnter, self::NotifyLeave,
-            self::ConsoleCmdOnEnter, self::ConsoleCmdOnLeave => Handlers\MovementHandler::class,
-            self::Use, self::InteractFrame, self::Sleep => Handlers\InteractionHandler::class,
-            self::SendChat, self::ReceiveChat,
-            self::BlockedCmds, self::AllowedCmds => Handlers\ChatHandler::class,
-            self::ItemDrop, self::ItemByDeath, self::Eat,
-            self::Enderpearl, self::Bow, self::Potions => Handlers\ItemHandler::class,
-            self::Flow, self::Explosion, self::AllowLeavesDecay,
-            self::AllowPlantGrowth, self::AllowSpreading, self::AllowBlockBurn => Handlers\EnvironmentHandler::class,
-            self::GameMode, self::FlyMode, self::Hunger,
-            self::Effects, self::ExpDrops => Handlers\PlayerStateHandler::class,
-            default => null,
+            self::ItemUse              => "Autorise l'utilisation d'objets",
+            self::ItemPickup           => "Autorise la récupération d'objets",
         };
     }
 

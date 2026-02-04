@@ -40,8 +40,13 @@ class MovementHandler extends AbstractFlagHandler
         }
 
         $consoleCmd = $this->getFlagValue($region, Flags::ConsoleCmdOnEnter);
-        if (is_string($consoleCmd) && $consoleCmd !== "none" && $consoleCmd !== "") {
+        if (is_string($consoleCmd) && $consoleCmd !== "none" && $consoleCmd !== "" && $consoleCmd !== "null") {
             $this->executeConsoleCommand($consoleCmd, $player);
+        }
+
+        $notifyEnter = $this->getFlagValue($region, Flags::NotifyEnter);
+        if(! empty(trim($notifyEnter)) && ($notifyEnter !== "none" && $notifyEnter !== "" && $notifyEnter !== "false" && $notifyEnter !== "null")) {
+            $player->sendMessage($notifyEnter);
         }
 
         return FlagResult::allow();
@@ -56,8 +61,13 @@ class MovementHandler extends AbstractFlagHandler
         }
 
         $consoleCmd = $this->getFlagValue($region, Flags::ConsoleCmdOnLeave);
-        if (is_string($consoleCmd) && $consoleCmd !== "none" && $consoleCmd !== "") {
+        if (is_string($consoleCmd) && $consoleCmd !== "none" && $consoleCmd !== "" && $consoleCmd !== "null") {
             $this->executeConsoleCommand($consoleCmd, $player);
+        }
+
+        $notifyLeave = $this->getFlagValue($region, Flags::NotifyLeave);
+        if(! empty(trim($notifyLeave)) && ($notifyLeave !== "none" && $notifyLeave !== "" && $notifyLeave !== "false" && $notifyLeave !== "null")) {
+            $player->sendMessage($notifyLeave);
         }
 
         return FlagResult::allow();

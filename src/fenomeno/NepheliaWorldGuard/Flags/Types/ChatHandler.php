@@ -76,7 +76,7 @@ class ChatHandler extends AbstractFlagHandler
         $command     = strtolower($event->getCommand());
         $allowedCmds = $this->getFlagValue($region, Flags::AllowedCmds);
         if(is_array($allowedCmds) && count($allowedCmds) > 0){
-            if(! isset($allowedCmds[$command]) && ! in_array($command, $allowedCmds)){
+            if(! isset($allowedCmds[$command])){
                 return FlagResult::deny(Flags::AllowedCmds);
             }
 
@@ -85,7 +85,7 @@ class ChatHandler extends AbstractFlagHandler
 
         $blockedCmds = $this->getFlagValue($region, Flags::BlockedCmds);
         if(is_array($blockedCmds) && count($blockedCmds) > 0) {
-            if (isset($blockedCmds[$command]) || in_array($command, $blockedCmds)) {
+            if (isset($blockedCmds[$command])) {
                 return FlagResult::deny(Flags::BlockedCmds);
             }
 

@@ -154,7 +154,7 @@ class PlayerStateHandler extends AbstractFlagHandler
             return;
         }
 
-        foreach ($effects as $effectData) {
+        foreach ($effects as $effectData => $_) {
             if (is_string($effectData)) {
                 $this->addEffectFromString($player, $effectData);
             }

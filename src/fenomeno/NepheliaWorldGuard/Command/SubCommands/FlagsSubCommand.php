@@ -9,6 +9,7 @@ use fenomeno\NepheliaWorldGuard\Constants\Messages\ExtraTags;
 use fenomeno\NepheliaWorldGuard\Constants\Messages\MessagesIds;
 use fenomeno\NepheliaWorldGuard\Enums\Flags;
 use fenomeno\NepheliaWorldGuard\libs\CortexPE\Commando\args\RawStringArgument;
+use fenomeno\NepheliaWorldGuard\libs\CortexPE\Commando\args\TextArgument;
 use fenomeno\NepheliaWorldGuard\libs\CortexPE\Commando\BaseSubCommand;
 use fenomeno\NepheliaWorldGuard\libs\CortexPE\Commando\exception\ArgumentOrderException;
 use fenomeno\NepheliaWorldGuard\Main;
@@ -41,7 +42,7 @@ final class FlagsSubCommand extends BaseSubCommand
         $this->registerArgument(0, new RawStringArgument(self::REGION_ARGUMENT, false));
         $this->registerArgument(1, new FlagsActionArgument(self::ACTION_ARGUMENT, false));
         $this->registerArgument(2, new FlagArgument(self::FLAG_ARGUMENT, true));
-        $this->registerArgument(3, new FlagValueArgument(self::VALUE_ARGUMENT, true));
+        $this->registerArgument(3, new TextArgument(self::VALUE_ARGUMENT, true));
     }
 
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
@@ -139,8 +140,7 @@ final class FlagsSubCommand extends BaseSubCommand
         }
 
         $rawValue = (string) $args[self::VALUE_ARGUMENT];
-
-        $result = $this->parseAndValidateValue($flag, $rawValue);
+        $result   = $this->parseAndValidateValue($flag, $rawValue);
 
         if ($result['error'] !== null) {
             MessagesUtils::sendTo($sender, MessagesIds::FLAGS_SET_INVALID_VALUE, [
@@ -303,7 +303,6 @@ final class FlagsSubCommand extends BaseSubCommand
         foreach ($items as $item) {
             $result[$item] = true;
         }
-
         return ['value' => $result, 'error' => null];
     }
 

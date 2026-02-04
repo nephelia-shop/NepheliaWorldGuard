@@ -201,18 +201,6 @@ region:
       message: "{MUTED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
       type: message
 
-  # ---------------------------------------------------------------------------
-  # RÉGIONS - JOUEUR
-  # ---------------------------------------------------------------------------
-  player:
-    in-region:
-      message: "{PREFIX}{SECONDARY}Le joueur {HIGHLIGHT}{PLAYER}{SECONDARY} est dans la région {PRIMARY}{REGION}{SECONDARY}."
-      type: message
-
-    not-in-region:
-      message: "{PREFIX}{SECONDARY}Le joueur {HIGHLIGHT}{PLAYER}{SECONDARY} n'est dans aucune région."
-      type: message
-
 # ============================================================================
 # FLAGS
 # ============================================================================
@@ -234,7 +222,7 @@ flags:
       type: message
 
     usage:
-      message: "{PREFIX}{ERROR}Utilisation correcte : {HIGHLIGHT}/nwg flags set <region> <flag> <value>{ERROR}."
+      message: "{PREFIX}{ERROR}Utilisation correcte : {HIGHLIGHT}/nwg flags <region> set <flag> <value>{ERROR}."
       type: message
 
     failure:
@@ -266,6 +254,10 @@ flags:
     entry:
       message: "{SECONDARY}  ▸ {MUTED}{FLAG} : {VALUE}"
       type: message
+
+    entry-modified:
+        message: "{SECONDARY}  ▸ {MUTED}{FLAG} : {HIGHLIGHT}{VALUE} {MUTED}(modifié)"
+        type: message
 
     footer:
       message: "{MUTED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -367,6 +359,10 @@ denied:
     message: "{PREFIX}{ERROR}Cette commande n'est pas autorisée ici."
     type: message
 
+  receive-chat:
+    message: "{PREFIX}{ERROR}Vous ne pouvez pas recevoir de messages dans cette zone."
+    type: bar
+
   # ---------------------------------------------------------------------------
   # DÉPLACEMENTS
   # ---------------------------------------------------------------------------
@@ -377,6 +373,18 @@ denied:
   allowed-leave:
     message: "{PREFIX}{ERROR}Vous ne pouvez pas quitter cette zone."
     type: message
+
+  exp-drops:
+    message: "{PREFIX}{ERROR}Vous ne pouvez pas gagner d'expérience ici."
+    type: bar
+
+  item-pickup:
+    message: "{PREFIX}{ERROR}Vous ne pouvez pas ramasser d'objets ici."
+    type: bar
+
+  item-use:
+    message: "{PREFIX}{ERROR}Vous ne pouvez pas utiliser d'objets ici."
+    type: bar
 
 # ============================================================================
 # NOTIFICATIONS DE RÉGION
@@ -455,17 +463,16 @@ help:
   commands:
     message: |
       {SECONDARY}  {PRIMARY}/nwg {MUTED}- {SECONDARY}Ouvre le menu principal
-      {SECONDARY}  {PRIMARY}/nwg create <nom> <extended> <global:tout les mondes> {MUTED}- {SECONDARY}Région étendue (Y: -Y_MIN:+Y_MAX)
-      {SECONDARY}  {PRIMARY}/nwg delete <nom> {MUTED}- {SECONDARY}Supprimer une région
+      {SECONDARY}  {PRIMARY}/nwg create <region> <extended> <global:tout les mondes> {MUTED}- {SECONDARY}Région étendue (Y: -Y_MIN:+Y_MAX)
+      {SECONDARY}  {PRIMARY}/nwg delete <region> {MUTED}- {SECONDARY}Supprimer une région
       {SECONDARY}  {PRIMARY}/nwg list {MUTED}- {SECONDARY}Lister les régions
       {SECONDARY}  {PRIMARY}/nwg info {MUTED}- {SECONDARY}Info de la région actuelle
-      {SECONDARY}  {PRIMARY}/nwg redefine <nom> {MUTED}- {SECONDARY}Redéfinir une région
+      {SECONDARY}  {PRIMARY}/nwg redefine <region> {MUTED}- {SECONDARY}Redéfinir une région
       {SECONDARY}  {PRIMARY}/nwg flags <region> get {MUTED}- {SECONDARY}Voir les flags
       {SECONDARY}  {PRIMARY}/nwg flags <region> set <flag> <valeur> {MUTED}- {SECONDARY}Modifier un flag
       {SECONDARY}  {PRIMARY}/nwg flags <region> reset <flag> {MUTED}- {SECONDARY}Réinitialiser un flag
       {SECONDARY}  {PRIMARY}/nwg flags <region> list {MUTED}- {SECONDARY}Lister les flags disponibles
       {SECONDARY}  {PRIMARY}/nwg cancel {MUTED}- {SECONDARY}Annuler la création/redéfinition en cours
-      {SECONDARY}  {PRIMARY}/nwg bypass {MUTED}- {SECONDARY}Activer/désactiver le mode bypass
       {SECONDARY}  {PRIMARY}/nwg reload {MUTED}- {SECONDARY}Recharger la configuration
       {SECONDARY}  {PRIMARY}/nwg parent <region> set <parent> {MUTED}- {SECONDARY}Définir le parent d'une région
       {SECONDARY}  {PRIMARY}/nwg parent <region> remove {MUTED}- {SECONDARY}Retirer le parent d'une région
@@ -502,24 +509,6 @@ help:
         {SECONDARY}
         {SECONDARY}  {MUTED}Utilisez {PRIMARY}/rg flags get <region> {MUTED}pour la liste complète.
       type: message
-
-
-
-# ============================================================================
-# BYPASS
-# ============================================================================
-bypass:
-  enabled:
-    message: "{PREFIX}{SUCCESS}Mode bypass {HIGHLIGHT}activé{SUCCESS}. Vous ignorez les protections."
-    type: message
-
-  disabled:
-    message: "{PREFIX}{WARNING}Mode bypass {HIGHLIGHT}désactivé{WARNING}."
-    type: message
-
-  active-warning:
-    message: "{PREFIX}{WARNING}⚠ Bypass actif - Les protections sont ignorées."
-    type: bar
 
 # ============================================================================
 # ÉVÉNEMENTS DE RÉGION
@@ -595,6 +584,21 @@ debug:
 
   event-cancelled:
     message: "{MUTED}[DEBUG] {SECONDARY}Événement annulé par flag {FLAG} dans {REGION}"
+    type: message
+
+# ============================================================================
+# ANNULATION DE LA CRÉATION/REDÉFINITION DE RÉGION
+# ============================================================================
+
+cancel:
+  creation-cancelled:
+    message: "{PREFIX}{WARNING}Création/redéfinition de région annulée."
+    type: message
+  nothing-to-cancel:
+    message: "{PREFIX}{ERROR}Vous n'êtes pas en train de créer ou redéfinir une région."
+    type: message
+  operation-cancelled:
+    message: "{PREFIX}{WARNING}Opération annulée."
     type: message
 
 parent:
